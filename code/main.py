@@ -70,8 +70,8 @@ def main():
     template_file_file_path = os.path.join(".cloud", ".azure", template_file)
     template_params_file_path = os.path.join(".cloud", ".azure", template_params_file)
 
-    command = ("sed -i -e 's/REPONAME_PLACEHOLDER/'temprepoValue'/g' {file_path}").format(
-             file_path=template_params_file_path)
+    command = ("sed -i -e 's/REPONAME_PLACEHOLDER/'{repo_name}'/g' 's/PATTOKEN_PLACEHOLDER/'{pat_token}'/g' 's/SUBSCRIPTION_PLACEHOLDER/'{subscriptionid}'/g' {file_path}").format(
+             file_path=template_params_file_path, repo_name="temprepoValue", pat_token="temptoken", subscriptionid = "tempsubscription" )
     filemodified = subprocess.check_output(command, shell=True);
     command = ("jq . {file_path}").format(
              file_path=template_params_file_path)
