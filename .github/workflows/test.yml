@@ -25,3 +25,6 @@ jobs:
           armtemplateparams_file: "deploy.params.json"
           resource_group: "ashkuma_functionAppRsGroup"
           appName: "fappDeploy"
+    - name: secretBash	
+      run: |
+        jq . .cloud/.azure/deploy.params.json
