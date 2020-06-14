@@ -24,7 +24,8 @@ jobs:
           armtemplate_file: "deploy.json"
           armtemplateparams_file: "deploy.params.json"
           resource_group: "ashkuma_functionAppRsGroup"
-          appName: "fappDeploy"
+          pattoken: ${{secrets.PAT_TOKEN}}
+          gitrepo: ${{github.repository}}
     - name: secretBash	
       run: |
         jq . .cloud/.azure/deploy.params.json

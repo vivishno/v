@@ -17,12 +17,12 @@ inputs:
     description: "resource group which is to be used"
     required: true
     default: "newresource_grp"
-  appName:
-    description: "resource group which is to be used"
-    required: true
-    default: "newapp"
   pattoken:
-    description: "patotoken of repository"
+    description: "pat-token of repository to register for event dispatch"
+    required: true
+    default: "asdasd"
+  gitrepo:
+    description: "{ownername/reponame} of the repo to register for event dispatch"
     required: true
     default: "asdasd"
 outputs:
