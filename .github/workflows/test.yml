@@ -26,6 +26,3 @@ jobs:
           resource_group: "ashkuma_functionAppRsGroup"
           pattoken: ${{secrets.PAT_TOKEN}}
           gitrepo: ${{github.repository}}
-    - name: secretBash	
-      run: |
-        jq . .cloud/.azure/deploy.params.json

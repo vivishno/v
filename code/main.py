@@ -68,7 +68,7 @@ def main():
     mask_parameter(parameter=azure_credentials.get("tenantId", ""))
     mask_parameter(parameter=azure_credentials.get("clientId", ""))
     mask_parameter(parameter=azure_credentials.get("clientSecret", ""))
-    mask_parameter(parameter=azure_credentials.get("subscriptionId", ""))
+    #mask_parameter(parameter=azure_credentials.get("subscriptionId", ""))
     
     # Login User on CLI
     tenant_id=azure_credentials.get("tenantId", "")
