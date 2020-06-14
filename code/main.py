@@ -84,16 +84,21 @@ def main():
         print(ex)
         return;
 
+    try:
 
     # update the parameters in the params file first
-    command = ("sed -i -e 's/REPONAME_PLACEHOLDER/'{repo_name}'/g' -e 's/PATTOKEN_PLACEHOLDER/'{pat_token}'/g' -e 's/SUBSCRIPTION_PLACEHOLDER/'{subscriptionid}'/g' {file_path}").format(
-             file_path=template_params_file_path, repo_name=self_repoName, pat_token=repo_PatToken, subscriptionid=subscriptionId )
-    filemodified = subprocess.check_output(command, shell=True);
-    # command = ("jq . {file_path}").format(
-    #          file_path=template_params_file_path)
-    # filedump = subprocess.check_output(command, shell=True);
+        command = ("sed -i -e 's/REPONAME_PLACEHOLDER/'{repo_name}'/g' -e 's/PATTOKEN_PLACEHOLDER/'{pat_token}'/g' -e 's/SUBSCRIPTION_PLACEHOLDER/'{subscriptionid}'/g' {file_path}").format(
+                file_path=template_params_file_path, repo_name=self_repoName, pat_token="testtoken", subscriptionid=subscriptionId )
+        filemodified = subprocess.call(command, shell=True);
+        print(filemodified)
+        print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
+    except Exception as ex:
+        print("error while updating parameters")
+        return;
+
     
-    print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
+    
+    
 
 if __name__ == "__main__":
     main()
