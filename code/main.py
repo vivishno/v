@@ -22,18 +22,7 @@ def deploy_functionApp(template_path, parameters_file_path,resource_group):
         return app_create_json # may here return just the values required to be returned
     except Exception as ex:
         raise ActionDeploymentError(ex)
-
-# def app_PATTOKEN(token,appName,resource_group ):
-#     try:
-#         command = ('az functionapp config appsettings set --name {appName} --resource-group {resource_group} --settings "PATTOKEN={PATTOKEN}"').format(
-#             PATTOKEN=token, appName=appName, resource_group=resource_group)
-#         fapp_tokenadd = subprocess.check_output(command, shell=True)
-#         fapp_tokenadd_json = json.loads(fapp_tokenadd)
-#         return fapp_tokenadd_json # may here return just the values required to be returned
-#     except Exception as ex:
-#         raise ActionDeploymentError(ex)
-    
-    
+   
 def main():
     # # Loading input values
     # print("::debug::Loading input values")
@@ -84,6 +73,7 @@ def main():
         print(ex)
         return;
 
+    success = False
     try:
         jsonobject = None
         with open(template_params_file_path,"r") as f:
@@ -93,10 +83,12 @@ def main():
         jsonobject["parameters"]["pat_token"]["value"] = repo_PatToken
         with open(template_params_file_path,"w") as f:
             json.dump(jsonobject,f)
-        print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
+        success = True
     except Exception as ex:
         print("error while updating parameters")
         return;
+    if success:
+        print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
 
 if __name__ == "__main__":
     main()
