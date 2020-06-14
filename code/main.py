@@ -85,20 +85,18 @@ def main():
         return;
 
     try:
-
-    # update the parameters in the params file first
-        command = ("sed -i -e 's/REPONAME_PLACEHOLDER/'{repo_name}'/g' -e 's/PATTOKEN_PLACEHOLDER/'{pat_token}'/g' -e 's/SUBSCRIPTION_PLACEHOLDER/'{subscriptionid}'/g' {file_path}").format(
-                file_path=template_params_file_path, repo_name=self_repoName, pat_token="testtoken", subscriptionid=subscriptionId )
-        filemodified = subprocess.call(command, shell=True);
-        print(filemodified)
+        jsonobject = None
+        with open(template_params_file_path,"r") as f:
+            jsonobject = json.load(f);
+        jsonobject["parameters"]["subscriptionID"]["value"] = subscriptionId
+        jsonobject["parameters"]["repo_name"]["value"] = self_repoName
+        jsonobject["parameters"]["pat_token"]["value"] = repo_PatToken
+        with open(template_params_file_path,"w") as f:
+            json.dump(jsonobject,f)
         print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
     except Exception as ex:
         print("error while updating parameters")
         return;
-
-    
-    
-    
 
 if __name__ == "__main__":
     main()
