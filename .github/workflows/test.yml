@@ -23,6 +23,6 @@ jobs:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           armtemplate_file: "deploy.json"
           armtemplateparams_file: "deploy.params.json"
-          resource_group: "TestFlow"
+          resource_group: "TestFlow2"
           pattoken: 'testPA2T'
           gitrepo: 'vivishno/aml_configure-1'
