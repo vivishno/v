@@ -31,8 +31,9 @@ def main():
     azure_credentials = os.environ.get("INPUT_AZURE_CREDENTIALS", default="{}")
     resource_group = os.environ.get("INPUT_RESOURCE_GROUP", default="newresource_group")
     repo_PatToken = os.environ.get("INPUT_PATTOKEN", default="")
-    self_repoName = os.environ.get("INPUT_GITREPO", default="")
-
+    self_repoName = os.getenv('GITHUB_REPOSITORY')
+    print("here------------------------------------------------------------")
+    print(self_repoName)
     try:
         azure_credentials = json.loads(azure_credentials)
     except JSONDecodeError:
