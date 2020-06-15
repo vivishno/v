@@ -25,4 +25,3 @@ jobs:
           armtemplateparams_file: "deploy.params.json"
           resource_group: "TestFlow2"
           pattoken: 'testPA2T'
-          gitrepo: 'vivishno/aml_configure-1'
