@@ -110,14 +110,16 @@ def main():
     deployment_properties = {
             'mode': DeploymentMode.incremental,
             'template': template,
-            'parameters': parameters
+            'parameters': deploy_parameter
         }
     print("---------------------checking properties----------------------------")
+    deploy_parameter = azure.mgmt.resource.Deployment()
+    deploy_parameter.properties=deployment_properties
     print(client.deployments)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
-            deployment_properties
+            deploy_parameter
         )
     deployment_async_operation.wait()
     #if success:
