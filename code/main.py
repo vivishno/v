@@ -13,6 +13,7 @@ from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimen
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
+from azure.mgmt.resource import Deployment
 
 
 def deploy_functionApp(template_path, parameters_file_path,resource_group):
@@ -113,7 +114,7 @@ def main():
             'parameters': parameters
         }
     print("---------------------checking properties----------------------------")
-    deploy_parameter = azure.mgmt.resource.Deployment()
+    deploy_parameter = Deployment()
     deploy_parameter.properties=deployment_properties
     print(client.deployments)
     deployment_async_operation = client.deployments.create_or_update(
