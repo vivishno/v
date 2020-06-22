@@ -110,9 +110,11 @@ def main():
          template1 = json.load(template_file_fd)
     parameters1=jsonobject
     deployment_properties = {
+        'properties':{
             'mode': DeploymentMode.incremental,
             'template': template1,
             'parameters': parameters1
+            }
         }
     print("---------------------checking properties----------------------------")
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
