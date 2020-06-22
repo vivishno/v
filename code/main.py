@@ -91,9 +91,12 @@ def main():
     except Exception as ex:
         print("error while updating parameters")
         return;
+    pass=str(\")+service_principal_password+str(\")
+    print("---------------------pass=")
+    print(pass)
     credentials = ServicePrincipalCredentials(
             service_principal_id,
-            \"service_principal_password\",
+            pass,
             tenant_id
         )
     client = ResourceManagementClient(credentials, subscriptionId)
