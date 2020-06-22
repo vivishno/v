@@ -14,7 +14,6 @@ from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
 from azure.mgmt.resource.resources.models import Deployment
-from azure.mgmt.resource.resources import DeploymentProperties 
 
 
 
@@ -116,14 +115,14 @@ def main():
             'parameters': parameters1
         }
     print("---------------------checking properties----------------------------")
-    p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
-    deploy_parameter = azure.mgmt.resource.Deployment()
-    deploy_parameter.properties=p
+    #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
+    deploy_parameter =Deployment()
+    deploy_parameter.properties=deployment_properties
     print(client.deployments)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
-            p
+            deploy_parameter
         )
     deployment_async_operation.wait()
     #if success:
