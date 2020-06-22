@@ -110,7 +110,7 @@ def main():
     deployment_properties = {
             'mode': DeploymentMode.incremental,
             'template': template,
-            'parameters': deploy_parameter
+            'parameters': parameters
         }
     print("---------------------checking properties----------------------------")
     deploy_parameter = azure.mgmt.resource.Deployment()
