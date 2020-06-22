@@ -101,8 +101,11 @@ def main():
             secret=service_principal_password,
             tenant=tenant_id
         )
-    
+    print(credentials)
     client = ResourceManagementClient(credentials, subscriptionId)
+        print("----------******8---------------------**************************************************************************")
+
+    print(client)
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
          template = json.load(template_file_fd)
@@ -114,9 +117,9 @@ def main():
         }
     print("---------------------checking properties----------------------------")
     #print(deployment_properties)
-    print(template)
-    print("--------------------------------**************************************************************************")
-    print(parameters)
+    #print(template)
+    #print("--------------------------------**************************************************************************")
+    #print(parameters)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
