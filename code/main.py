@@ -97,7 +97,7 @@ def main():
     #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
             client_id=service_principal_id,
-            secret=service_principal_password,
+            secret="ssad",
             tenant=tenant_id
         )
     print(credentials)
