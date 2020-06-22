@@ -97,9 +97,9 @@ def main():
     print(service_principal_password)
     #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
-            service_principal_id,
+            "ddd",
             "abc",
-            tenant_id
+            "sd"
         )
     client = ResourceManagementClient(credentials, subscriptionId)
     template=None
