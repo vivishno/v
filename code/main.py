@@ -113,7 +113,7 @@ def main():
             'parameters': parameters1
         }
     print("---------------------checking properties----------------------------")
-    p=DeploymentProperties(*, DeploymentMode.incremental, template=template1, template_link=None, parameters=parameters1, parameters_link=None, debug_setting=None, **kwargs)
+    p=DeploymentProperties(DeploymentMode.incremental, template=template1, template_link=None, parameters=parameters1, parameters_link=None, debug_setting=None)
     print(client.deployments)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
