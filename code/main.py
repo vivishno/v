@@ -114,7 +114,7 @@ def main():
             'mode': DeploymentMode.incremental,
             'template': template,
             'parameters': parameters
-            }
+        }
         }
     print("---------------------checking properties----------------------------")
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
