@@ -97,11 +97,11 @@ def main():
     #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
             client_id=service_principal_id,
-            secret="ssad",
+            secret=service_principal_password,
             tenant=tenant_id
         )
     print(credentials)
-    client = ResourceManagementClient(credentials, subscriptionId)
+    client = ResourceManagementClient(credentials, "123")
     print("----------******8---------------------**************************************************************************")
 
     print(client)
