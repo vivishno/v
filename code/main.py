@@ -112,6 +112,8 @@ def main():
             'template': template,
             'parameters': parameters
         }
+    print("---------------------checking properties----------------------------")
+    print(deployment_properties)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
