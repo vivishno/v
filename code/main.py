@@ -118,7 +118,7 @@ def main():
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
-            deployment_properties
+            properties=deployment_properties
         )
     deployment_async_operation.wait()
     #if success:
