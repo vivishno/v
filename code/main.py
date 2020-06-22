@@ -93,7 +93,6 @@ def main():
         return;
     #pass=str(\")+service_principal_password+str(\")
     print("---------------------pass=")
-    print(str(service_principal_password))
     print(service_principal_password)
     #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
@@ -103,7 +102,7 @@ def main():
         )
     print(credentials)
     client = ResourceManagementClient(credentials, subscriptionId)
-        print("----------******8---------------------**************************************************************************")
+    print("----------******8---------------------**************************************************************************")
 
     print(client)
     template=None
