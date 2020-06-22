@@ -10,6 +10,9 @@ from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
 from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimentConfigurationException, required_parameters_provided, mask_parameter, convert_to_markdown, load_pipeline_yaml, load_runconfig_yaml, load_runconfig_python
+from azure.common.credentials import ServicePrincipalCredentials
+from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.resource.resources.models import DeploymentMode
 
 
 def deploy_functionApp(template_path, parameters_file_path,resource_group):
@@ -63,18 +66,19 @@ def main():
     service_principal_id=azure_credentials.get("clientId", "")
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
-    command = ("az login --service-principal --username {APP_ID} --password \"{PASSWORD}\" --tenant {TENANT_ID}").format(
-            APP_ID=service_principal_id, PASSWORD=service_principal_password, TENANT_ID=tenant_id)
-    try:
-        login_result = subprocess.check_output(command, shell=True)
-        print(login_result)
-    except Exception as ex:
-        print(ex)
-        return;
+    #command = ("az login --service-principal --username {APP_ID} --password \"{PASSWORD}\" --tenant {TENANT_ID}").format(
+    #        APP_ID=service_principal_id, PASSWORD=service_principal_password, TENANT_ID=tenant_id)
+    #try:
+    #    login_result = subprocess.check_output(command, shell=True)
+    #    print(login_result)
+    #except Exception as ex:
+    #    print(ex)
+    #    return;
 
     success = False
+    jsonobject = None
+
     try:
-        jsonobject = None
         with open(template_params_file_path,"r") as f:
             jsonobject = json.load(f);
         jsonobject["parameters"]["subscriptionID"]["value"] = subscriptionId
@@ -82,10 +86,32 @@ def main():
         jsonobject["parameters"]["pat_token"]["value"] = repo_PatToken
         with open(template_params_file_path,"w") as f:
             json.dump(jsonobject,f)
+         
         success = True
     except Exception as ex:
         print("error while updating parameters")
         return;
+    credentials = ServicePrincipalCredentials(
+            service_principal_id,
+            service_principal_password,
+            tenant_id
+        )
+    client = ResourceManagementClient(credentials, subscriptionId)
+    template=None
+    with open(template_file_file_path, 'r') as template_file_fd:
+         template = json.load(template_file_fd)
+    parameters=jsonobject
+    deployment_properties = {
+            'mode': DeploymentMode.incremental,
+            'template': template,
+            'parameters': parameters
+        }
+    deployment_async_operation = client.deployments.create_or_update(
+            resource_group,
+            'azure-sample',
+            deployment_properties
+        )
+    deployment_async_operation.wait()
     if success:
         print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
 
