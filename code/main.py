@@ -58,7 +58,7 @@ def main():
     print("::debug::Masking parameters")
     mask_parameter(parameter=azure_credentials.get("tenantId", ""))
     mask_parameter(parameter=azure_credentials.get("clientId", ""))
-    mask_parameter(parameter=azure_credentials.get("clientSecret", ""))
+    #mask_parameter(parameter=azure_credentials.get("clientSecret", ""))
     #mask_parameter(parameter=azure_credentials.get("subscriptionId", ""))
     
     # Login User on CLI
@@ -98,9 +98,9 @@ def main():
     #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
             service_principal_id,
-            '\"{PASSWORD}\"',
+            "abc",
             tenant_id
-        ).format(PASSWORD=service_principal_password)
+        )
     client = ResourceManagementClient(credentials, subscriptionId)
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
