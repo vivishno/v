@@ -107,19 +107,20 @@ def main():
     print(client)
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
-         template1 = json.load(template_file_fd)
-    parameters1=jsonobject
+         template = json.load(template_file_fd)
+    parameters=jsonobject
     deployment_properties = {
         'properties':{
             'mode': DeploymentMode.incremental,
-            'template': template1,
-            'parameters': parameters1
+            'template': template,
+            'parameters': parameters
             }
         }
     print("---------------------checking properties----------------------------")
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
     #deploy_parameter =Deployment(deployment_properties)
     print(client.deployments)
+    print(parameters)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
