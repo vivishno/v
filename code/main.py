@@ -91,12 +91,14 @@ def main():
     except Exception as ex:
         print("error while updating parameters")
         return;
-    pass=str(\")+service_principal_password+str(\")
+    #pass=str(\")+service_principal_password+str(\")
     print("---------------------pass=")
-    print(pass)
+    print(str(service_principal_password))
+    print(service_principal_password)
+    #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
             service_principal_id,
-            pass,
+            '\"'+str(service_principal_password)+'\"',
             tenant_id
         )
     client = ResourceManagementClient(credentials, subscriptionId)
@@ -115,8 +117,8 @@ def main():
             deployment_properties
         )
     deployment_async_operation.wait()
-    if success:
-        print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
+    #if success:
+    #    print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
 
 if __name__ == "__main__":
     main()
