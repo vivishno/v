@@ -96,11 +96,7 @@ def main():
     print(str(service_principal_password))
     print(service_principal_password)
     #print(\"+{service_principal_password}+\")
-    credentials = ServicePrincipalCredentials(
-            "ddd",
-            "abc",
-            "sd"
-        )
+    credentials = ServicePrincipalCredentials("ddd","abc","sd")
     client = ResourceManagementClient(credentials, subscriptionId)
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
