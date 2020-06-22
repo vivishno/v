@@ -93,7 +93,7 @@ def main():
         return;
     credentials = ServicePrincipalCredentials(
             service_principal_id,
-            service_principal_password,
+            \"service_principal_password\",
             tenant_id
         )
     client = ResourceManagementClient(credentials, subscriptionId)
