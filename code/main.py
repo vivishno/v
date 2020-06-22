@@ -13,7 +13,7 @@ from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimen
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
-from azure.mgmt.resource.resources import DeploymentProperties 
+from azure.mgmt.resource.resources.models import Deployment 
 
 
 def deploy_functionApp(template_path, parameters_file_path,resource_group):
