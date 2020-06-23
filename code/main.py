@@ -83,9 +83,9 @@ def main():
     try:
         with open(template_params_file_path,"r") as f:
             jsonobject = json.load(f);
-        jsonobject["parameters"]["subscriptionID"]["value"] = subscriptionId
-        jsonobject["parameters"]["repo_name"]["value"] = self_repoName
-        jsonobject["parameters"]["pat_token"]["value"] = repo_PatToken
+        jsonobject["subscriptionID"]["value"] = subscriptionId
+        jsonobject["repo_name"]["value"] = self_repoName
+        jsonobject["pat_token"]["value"] = repo_PatToken
         with open(template_params_file_path,"w") as f:
             json.dump(jsonobject,f)
          
@@ -95,14 +95,13 @@ def main():
         return;
     #pass=str(\")+service_principal_password+str(\")
     print("---------------------pass=")
-    print(service_principal_password)
     #print(\"+{service_principal_password}+\")
     credentials = ServicePrincipalCredentials(
             client_id=service_principal_id,
             secret=service_principal_password,
             tenant=tenant_id
         )
-    print(credentials)
+    #print(credentials)
     client = ResourceManagementClient(credentials, subscriptionId)
     print(client)
     template=None
@@ -110,21 +109,22 @@ def main():
          template = json.load(template_file_fd)
     parameters=jsonobject
     deployment_properties = {
+        'properties':{
             'mode': DeploymentMode.incremental,
             'template': template,
             'parameters': parameters
-    
+        }
      }
     print("---------------------checking properties----------------------------")
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
     #deploy_parameter =Deployment(properties=deployment_properties)
-    print(client.deployments)
     print(parameters)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
             deployment_properties
         )
+    print(deployment_async_operation)
     deployment_async_operation.wait()
     #if success:
     #    print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
