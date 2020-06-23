@@ -109,15 +109,15 @@ def main():
     with open(template_file_file_path, 'r') as template_file_fd:
          template = json.load(template_file_fd)
     parameters=jsonobject
-    deployment_properties = {'properties':{
+    deployment_properties = {
             'mode': DeploymentMode.incremental,
             'template': template,
             'parameters': parameters
-    }
+    
      }
     print("---------------------checking properties----------------------------")
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
-    deploy_parameter =Deployment(deployment_properties)
+    deploy_parameter =Deployment(properties=deployment_properties)
     print(client.deployments)
     print(parameters)
     deployment_async_operation = client.deployments.create_or_update(
