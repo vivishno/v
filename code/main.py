@@ -86,6 +86,8 @@ def main():
         jsonobject["subscriptionID"]["value"] = subscriptionId
         jsonobject["repo_name"]["value"] = self_repoName
         jsonobject["pat_token"]["value"] = repo_PatToken
+        print(jsonobject["pat_token"]["value"])
+        print(repo_PatToken)
         with open(template_params_file_path,"w") as f:
             json.dump(jsonobject,f)
          
