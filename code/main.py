@@ -117,13 +117,13 @@ def main():
      }
     print("---------------------checking properties----------------------------")
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
-    deploy_parameter =Deployment(properties=deployment_properties)
+    #deploy_parameter =Deployment(properties=deployment_properties)
     print(client.deployments)
     print(parameters)
     deployment_async_operation = client.deployments.create_or_update(
             resource_group,
             'azure-sample',
-            deploy_parameter
+            deployment_properties
         )
     deployment_async_operation.wait()
     #if success:
