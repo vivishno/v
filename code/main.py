@@ -13,8 +13,6 @@ from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimen
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
-from azure.mgmt.resource.resources.models import Deployment
-
 
 
 def deploy_functionApp(template_path, parameters_file_path,resource_group):
@@ -90,7 +88,6 @@ def main():
         print(repo_PatToken)
         with open(template_params_file_path,"w") as f:
             json.dump(jsonobject,f)
-         
         success = True
     except Exception as ex:
         print("error while updating parameters")
@@ -121,13 +118,17 @@ def main():
     #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
     #deploy_parameter =Deployment(properties=deployment_properties)
     print(parameters)
-    deployment_async_operation = client.deployments.create_or_update(
-            resource_group,
-            'azure-sample',
-            deployment_properties
-        )
-    print(deployment_async_operation)
-    deployment_async_operation.wait()
+    try:
+        deployment_async_operation = client.deployments.create_or_update(
+                resource_group,
+                'azure-sample',
+                deployment_properties
+            )
+        print(deployment_async_operation)
+        deployment_async_operation.wait()
+    except Exception as ex:
+        raise ActionDeploymentError(ex)
+    print("Deployment done")
     #if success:
     #    print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
 
