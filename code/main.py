@@ -14,18 +14,6 @@ from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
 
-
-def deploy_functionApp(template_path, parameters_file_path,resource_group):
-    try:
-        command = ('az group deployment create -g {resource_group} --template-file "{template_path}" --parameters "{parameters_file_path}" -o json').format(
-            template_path=template_path, parameters_file_path=parameters_file_path, resource_group=resource_group)
-        print(command)
-        app_create = subprocess.check_output(command, shell=True)
-        app_create_json = json.loads(app_create)
-        return app_create_json # may here return just the values required to be returned
-    except Exception as ex:
-        raise ActionDeploymentError(ex)
-   
 def main():
     # # Loading input values
     # print("::debug::Loading input values")
@@ -95,11 +83,15 @@ def main():
     #pass=str(\")+service_principal_password+str(\")
     print("---------------------pass=")
     #print(\"+{service_principal_password}+\")
+    credentials=None
+    try:
     credentials = ServicePrincipalCredentials(
             client_id=service_principal_id,
             secret=service_principal_password,
             tenant=tenant_id
         )
+    except Exception as ex:
+       print(ex)
     #print(credentials)
     client = ResourceManagementClient(credentials, subscriptionId)
     print(client)
