@@ -63,8 +63,6 @@ def main():
         jsonobject["subscriptionID"]["value"] = subscriptionId
         jsonobject["repo_name"]["value"] = self_repoName
         jsonobject["pat_token"]["value"] = repo_PatToken
-        print(jsonobject["pat_token"]["value"])
-        print(repo_PatToken)
         with open(template_params_file_path,"w") as f:
             json.dump(jsonobject,f)
         success = True
@@ -81,7 +79,6 @@ def main():
     except Exception as ex:
        print(ex)
     client = ResourceManagementClient(credentials, subscriptionId)
-    print(client)
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
          template = json.load(template_file_fd)
