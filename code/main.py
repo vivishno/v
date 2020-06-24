@@ -85,11 +85,11 @@ def main():
     #print(\"+{service_principal_password}+\")
     credentials=None
     try:
-    credentials = ServicePrincipalCredentials(
-            client_id=service_principal_id,
-            secret=service_principal_password,
-            tenant=tenant_id
-        )
+        credentials = ServicePrincipalCredentials(
+             client_id=service_principal_id,
+             secret=service_principal_password,
+             tenant=tenant_id
+          )
     except Exception as ex:
        print(ex)
     #print(credentials)
