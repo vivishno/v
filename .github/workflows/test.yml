@@ -13,7 +13,7 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: Check Out Repository
       id: checkout_repository
-      uses: actions/checkout@v2 
+      uses: actions/checkout@v2
         
     # Connect or Create the Azure Machine Learning Workspace
     - name: deploy all resources
@@ -23,5 +23,5 @@ jobs:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           armtemplate_file: "deploy.json"
           armtemplateparams_file: "deploy.params.json"
-          resource_group: "PythonSdk"
+          resource_group: "ashkuma_functionAppRsGroup"
           pattoken: ${{secrets.PAT_TOKEN}}
