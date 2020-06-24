@@ -83,7 +83,7 @@ def main():
             jsonobject = json.load(f);
         jsonobject["subscriptionID"]["value"] = subscriptionId
         jsonobject["repo_name"]["value"] = self_repoName
-        jsonobject["pat_token"]["value"] = "HelloToken"
+        jsonobject["pat_token"]["value"] = repo_PatToken
         print(jsonobject["pat_token"]["value"])
         print(repo_PatToken)
         with open(template_params_file_path,"w") as f:
