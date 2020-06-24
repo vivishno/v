@@ -54,18 +54,9 @@ def main():
     service_principal_id=azure_credentials.get("clientId", "")
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
-    #command = ("az login --service-principal --username {APP_ID} --password \"{PASSWORD}\" --tenant {TENANT_ID}").format(
-    #        APP_ID=service_principal_id, PASSWORD=service_principal_password, TENANT_ID=tenant_id)
-    #try:
-    #    login_result = subprocess.check_output(command, shell=True)
-    #    print(login_result)
-    #except Exception as ex:
-    #    print(ex)
-    #    return;
-
+    
     success = False
     jsonobject = None
-
     try:
         with open(template_params_file_path,"r") as f:
             jsonobject = json.load(f);
@@ -80,9 +71,6 @@ def main():
     except Exception as ex:
         print("error while updating parameters")
         return;
-    #pass=str(\")+service_principal_password+str(\")
-    print("---------------------pass=")
-    #print(\"+{service_principal_password}+\")
     credentials=None
     try:
         credentials = ServicePrincipalCredentials(
@@ -92,7 +80,6 @@ def main():
           )
     except Exception as ex:
        print(ex)
-    #print(credentials)
     client = ResourceManagementClient(credentials, subscriptionId)
     print(client)
     template=None
@@ -106,23 +93,16 @@ def main():
             'parameters': parameters
         }
      }
-    print("---------------------checking properties----------------------------")
-    #p=DeploymentProperties(DeploymentMode.incremental, template=template1,  parameters=parameters1)
-    #deploy_parameter =Deployment(properties=deployment_properties)
-    print(parameters)
     try:
         deployment_async_operation = client.deployments.create_or_update(
                 resource_group,
                 'azure-sample',
                 deployment_properties
             )
-        print(deployment_async_operation)
         deployment_async_operation.wait()
     except Exception as ex:
         raise ActionDeploymentError(ex)
     print("Deployment done")
-    #if success:
-    #    print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
 
 if __name__ == "__main__":
     main()
