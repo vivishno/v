@@ -64,14 +64,14 @@ def main():
         credentials = ServicePrincipalCredentials(
              client_id=service_principal_id,
              secret=service_principal_password,
-             tenant="xhwk1"
+             tenant=tenant_id
           )
     except Exception as ex:
        raise CredentialsVerificationError(ex)
     
     client=None
     try:    
-        client = ResourceManagementClient(credentials, subscriptionId)
+        client = ResourceManagementClient(credentials, "asd")
     except Exception as ex:
         raise ResourceManagementError(ex)  
         
@@ -89,7 +89,6 @@ def main():
     try:
         validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
         validate.wait()
-        print(validate.status())
     except Exception as ex:
         raise ActionDeploymentError(ex)    
     try:
