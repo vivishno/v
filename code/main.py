@@ -64,7 +64,7 @@ def main():
         credentials = ServicePrincipalCredentials(
              client_id=service_principal_id,
              secret=service_principal_password,
-             tenant=tenant_id
+             tenant="xhwk1"
           )
     except Exception as ex:
        raise CredentialsVerificationError(ex)
