@@ -55,10 +55,7 @@ def main():
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
     
-    parameters=get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)
-    print("parameters------")
-    print(parameters)
-    
+    parameters=get_template_parameters(template_params_file_path,subscriptionId,self_repoName,"sd")    
     credentials=None
     try:
         credentials = ServicePrincipalCredentials(
@@ -71,7 +68,7 @@ def main():
     
     client=None
     try:    
-        client = ResourceManagementClient(credentials, "asd")
+        client = ResourceManagementClient(credentials, tenant_id)
     except Exception as ex:
         raise ResourceManagementError(ex)  
         
