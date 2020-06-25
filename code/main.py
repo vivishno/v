@@ -58,6 +58,7 @@ def main():
     parameters=get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)
     print("parameters------")
     print(parameters)
+    
     credentials=None
     try:
         credentials = ServicePrincipalCredentials(
@@ -66,9 +67,14 @@ def main():
              tenant=tenant_id
           )
     except Exception as ex:
-       print(ex)
-    client = ResourceManagementClient(credentials, subscriptionId)
+       raise CredentialsVerificationError(ex)
     
+    client=None
+    try:    
+        client = ResourceManagementClient(credentials, subscriptionId)
+    except Exception as ex:
+        raise ResourceManagementError(ex)  
+        
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
          template = json.load(template_file_fd)
