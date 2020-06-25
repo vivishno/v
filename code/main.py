@@ -81,7 +81,7 @@ def main():
         }
      }
     try:
-        validate=client.deployments.validate("testss","azure-sample",deployment_properties)
+        validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
         validate.wait()
         print(validate.status())
     except Exception as ex:
