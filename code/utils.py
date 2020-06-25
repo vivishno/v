@@ -28,8 +28,10 @@ def get_template_parameters(template_params_file_path,subscriptionId,self_repoNa
         jsonobject["repo_name"]["value"] = self_repoName
         jsonobject["pat_token"]["value"] = repo_PatToken
     except JSONDecodeError:
-        print("::error::Please check the arm template parameter file.")
-        raise TemplateParameterException(f"Incorrect or poorly formed arm template parameter file")
+        print("::error::Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS")
+        raise AMLConfigurationException(f"Incorrect or poorly formed output from azure credentials saved in AZURE_CREDENTIALS secret. See setup in https://github.com/Azure/aml-workspace/blob/master/README.md")
+    
+
     return jsonobject
 
 def required_parameters_provided(parameters, keys, message="Required parameter not found in your parameters file. Please provide a value for the following key(s): "):
