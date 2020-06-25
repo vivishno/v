@@ -15,6 +15,22 @@ class AMLConfigurationException(Exception):
 class AMLExperimentConfigurationException(Exception):
     pass
 
+def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)
+    success = False
+    jsonobject = None
+    try:
+        with open(template_params_file_path,"r") as f:
+            jsonobject = json.load(f);
+        jsonobject["subscriptionID"]["value"] = subscriptionId
+        jsonobject["repo_name"]["value"] = self_repoName
+        jsonobject["pat_token"]["value"] = repo_PatToken
+        with open(template_params_file_path,"w") as f:
+            json.dump(jsonobject,f)
+        success = True
+    except Exception as ex:
+        raise AMLConfigurationException(ex)
+        return;
+    return jsonobject
 
 def required_parameters_provided(parameters, keys, message="Required parameter not found in your parameters file. Please provide a value for the following key(s): "):
     missing_keys = []
