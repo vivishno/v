@@ -20,19 +20,20 @@ class TemplateParameterException(Exception):
     pass
 
 def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken):
-    jsonobject = None
+    parameters=None
     try:
         with open(template_params_file_path,"r") as f:
             jsonobject = json.load(f);
-        jsonobject["subscriptionID"]["value"] = subscriptionId
-        jsonobject["repo_name"]["value"] = self_repoName
-        jsonobject["pat_token"]["value"] = repo_PatToken
+        parameters=jsonobject["parameters"]
+        parameters["subscriptionID"]["value"] = subscriptionId
+        parameters["repo_name"]["value"] = self_repoName
+        parameters["pat_token"]["value"] = repo_PatToken
+        
     except JSONDecodeError:
         print("::error::Please check the parameter file for errors")
         raise TemplateParameterException(f"Incorrect or poorly formed template parameters")
-    
-
-    return jsonobject
+        
+    return parameters
 
 def required_parameters_provided(parameters, keys, message="Required parameter not found in your parameters file. Please provide a value for the following key(s): "):
     missing_keys = []
