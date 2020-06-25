@@ -6,17 +6,22 @@ import json
 from azureml.core import RunConfiguration, ScriptRunConfig
 from azureml.pipeline.core import Pipeline
 from json import JSONDecodeError
+from azureml.core import RunConfiguration, ScriptRunConfig
+from azureml.pipeline.core import Pipeline
+
 class ActionDeploymentError(Exception):
     pass
 
 class AMLConfigurationException(Exception):
     pass
 
-
-class AMLExperimentConfigurationException(Exception):
+class ResourceManagementError(Exception):
     pass
 
-class TemplateParameterException(Exception):
+class CredentialsVerificationError(Exception):
+    pass
+
+class AMLExperimentConfigurationException(Exception):
     pass
 
 def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken):
