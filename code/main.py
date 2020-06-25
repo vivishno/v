@@ -68,7 +68,7 @@ def main():
     
     client=None
     try:    
-        client = ResourceManagementClient(credentials, tenant_id)
+        client = ResourceManagementClient(credentials, subscriptionId)
     except Exception as ex:
         raise ResourceManagementError(ex)  
         
