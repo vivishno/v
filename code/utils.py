@@ -27,7 +27,8 @@ def get_template_parameters(template_params_file_path,subscriptionId,self_repoNa
         jsonobject["subscriptionID"]["value"] = subscriptionId
         jsonobject["repo_name"]["value"] = self_repoName
         jsonobject["pat_token"]["value"] = repo_PatToken
-    except JSONDecodeError as ex:
+    except JSONDecodeError:
+        print("::error::Please check the arm template parameter file.")
         raise TemplateParameterException(f"Incorrect or poorly formed arm template parameter file")
     return jsonobject
 
