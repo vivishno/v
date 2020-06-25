@@ -15,7 +15,7 @@ class AMLConfigurationException(Exception):
 class AMLExperimentConfigurationException(Exception):
     pass
 
-def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)
+def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken):
     success = False
     jsonobject = None
     try:
