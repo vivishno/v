@@ -81,6 +81,12 @@ def main():
         }
      }
     try:
+        validate=client.deployments.validate("testss","azure-sample",deployment_properties)
+        validate.wait()
+        print(validate.status())
+    except Exception as ex:
+        raise ActionDeploymentError(ex)    
+    try:
         deployment_async_operation = client.deployments.create_or_update(
                 resource_group,
                 'azure-sample',
