@@ -9,20 +9,11 @@ from azureml.exceptions import AuthenticationException, ProjectSystemException, 
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimentConfigurationException, required_parameters_provided, mask_parameter, convert_to_markdown, load_pipeline_yaml, load_runconfig_yaml, load_runconfig_python
+from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimentConfigurationException, required_parameters_provided, mask_parameter, convert_to_markdown, load_pipeline_yaml, load_runconfig_yaml, load_runconfig_python, get_template_parameters
+from azure.common.credentials import ServicePrincipalCredentials
+from azure.mgmt.resource import ResourceManagementClient
+from azure.mgmt.resource.resources.models import DeploymentMode
 
-
-def deploy_functionApp(template_path, parameters_file_path,resource_group):
-    try:
-        command = ('az group deployment create -g {resource_group} --template-file "{template_path}" --parameters "{parameters_file_path}" -o json').format(
-            template_path=template_path, parameters_file_path=parameters_file_path, resource_group=resource_group)
-        print(command)
-        app_create = subprocess.check_output(command, shell=True)
-        app_create_json = json.loads(app_create)
-        return app_create_json # may here return just the values required to be returned
-    except Exception as ex:
-        raise ActionDeploymentError(ex)
-   
 def main():
     # # Loading input values
     # print("::debug::Loading input values")
@@ -63,31 +54,50 @@ def main():
     service_principal_id=azure_credentials.get("clientId", "")
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
-    command = ("az login --service-principal --username {APP_ID} --password \"{PASSWORD}\" --tenant {TENANT_ID}").format(
-            APP_ID=service_principal_id, PASSWORD=service_principal_password, TENANT_ID=tenant_id)
+    
+    parameters=get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)    
+    credentials=None
     try:
-        login_result = subprocess.check_output(command, shell=True)
-        print(login_result)
+        credentials = ServicePrincipalCredentials(
+             client_id=service_principal_id,
+             secret=service_principal_password,
+             tenant=tenant_id
+          )
     except Exception as ex:
-        print(ex)
-        return;
-
-    success = False
+       raise CredentialsVerificationError(ex)
+    
+    client=None
+    try:    
+        client = ResourceManagementClient(credentials, subscriptionId)
+    except Exception as ex:
+        raise ResourceManagementError(ex)  
+        
+    template=None
+    with open(template_file_file_path, 'r') as template_file_fd:
+         template = json.load(template_file_fd)
+            
+    deployment_properties = {
+        'properties':{
+            'mode': DeploymentMode.incremental,
+            'template': template,
+            'parameters': parameters
+        }
+     }
     try:
-        jsonobject = None
-        with open(template_params_file_path,"r") as f:
-            jsonobject = json.load(f);
-        jsonobject["parameters"]["subscriptionID"]["value"] = subscriptionId
-        jsonobject["parameters"]["repo_name"]["value"] = self_repoName
-        jsonobject["parameters"]["pat_token"]["value"] = repo_PatToken
-        with open(template_params_file_path,"w") as f:
-            json.dump(jsonobject,f)
-        success = True
+        validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
+        validate.wait()
     except Exception as ex:
-        print("error while updating parameters")
-        return;
-    if success:
-        print(deploy_functionApp(template_file_file_path, template_params_file_path, resource_group))
+        raise ActionDeploymentError(ex)    
+    try:
+        deployment_async_operation = client.deployments.create_or_update(
+                resource_group,
+                'azure-sample',
+                deployment_properties
+            )
+        deployment_async_operation.wait()
+    except Exception as ex:
+        raise ActionDeploymentError(ex)
+    print("Deployment done")
 
 if __name__ == "__main__":
     main()
