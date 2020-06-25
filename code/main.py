@@ -9,7 +9,7 @@ from azureml.exceptions import AuthenticationException, ProjectSystemException, 
 from adal.adal_error import AdalError
 from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimentConfigurationException, required_parameters_provided, mask_parameter, convert_to_markdown, load_pipeline_yaml, load_runconfig_yaml, load_runconfig_python
+from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimentConfigurationException, required_parameters_provided, mask_parameter, convert_to_markdown, load_pipeline_yaml, load_runconfig_yaml, load_runconfig_python, get_template_parameters
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
@@ -55,20 +55,9 @@ def main():
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
     
-    success = False
-    jsonobject = None
-    try:
-        with open(template_params_file_path,"r") as f:
-            jsonobject = json.load(f);
-        jsonobject["subscriptionID"]["value"] = subscriptionId
-        jsonobject["repo_name"]["value"] = self_repoName
-        jsonobject["pat_token"]["value"] = repo_PatToken
-        with open(template_params_file_path,"w") as f:
-            json.dump(jsonobject,f)
-        success = True
-    except Exception as ex:
-        print("error while updating parameters")
-        return;
+    parameters=get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)
+    print("parameters------")
+    print(parameters)
     credentials=None
     try:
         credentials = ServicePrincipalCredentials(
@@ -79,10 +68,11 @@ def main():
     except Exception as ex:
        print(ex)
     client = ResourceManagementClient(credentials, subscriptionId)
+    
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
          template = json.load(template_file_fd)
-    parameters=jsonobject
+            
     deployment_properties = {
         'properties':{
             'mode': DeploymentMode.incremental,
