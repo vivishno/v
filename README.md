@@ -1,5 +1,3 @@
-# aml_configure
-
 # GitHub Action for deploying/configuring Machine Learning Infrastructure to Azure
 
 ## Usage
