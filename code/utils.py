@@ -31,8 +31,8 @@ def get_template_parameters(template_params_file_path,subscriptionId,self_repoNa
             jsonobject = json.load(f);
         parameters=jsonobject["parameters"]
         parameters["subscriptionID"]["value"] = subscriptionId
-        parameters["repo_name"]["value"] = self_repoName
-        parameters["pat_token"]["value"] = repo_PatToken
+        parameters["repoName"]["value"] = self_repoName
+        parameters["patToken"]["value"] = repo_PatToken
         
     except JSONDecodeError:
         print("::error::Please check the parameter file for errors")
