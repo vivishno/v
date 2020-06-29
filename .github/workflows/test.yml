@@ -23,5 +23,5 @@ jobs:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           armtemplate_file: "deploy.json"
           armtemplateparams_file: "deploy.params.json"
-          resource_group: "PythonSdk"
+          resource_group: "ashkuma_functionAppRsGroup"
           pattoken: ${{secrets.PAT_TOKEN}}
