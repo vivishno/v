@@ -20,14 +20,12 @@ class TemplateParameterException(Exception):
     pass
 
 
-def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken):
+def get_template_parameters(template_params_file_path,repo_PatToken):
     parameters=None
     try:
         with open(template_params_file_path,"r") as f:
             jsonobject = json.load(f);
         parameters=jsonobject["parameters"]
-        parameters["subscriptionID"]["value"] = subscriptionId
-        parameters["repoName"]["value"] = self_repoName
         parameters["patToken"]["value"] = repo_PatToken
         
     except JSONDecodeError:

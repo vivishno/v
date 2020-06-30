@@ -48,7 +48,7 @@ def main():
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
     
-    parameters=get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken)    
+    parameters=get_template_parameters(template_params_file_path,repo_PatToken)    
     credentials=None
     try:
         credentials = ServicePrincipalCredentials(
