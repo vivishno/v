@@ -1,15 +1,8 @@
 import os
 import json
 import time
-import subprocess
-from azureml.core import Workspace, Experiment
-from azureml.core.authentication import ServicePrincipalAuthentication
-from azureml.pipeline.core import PipelineRun
-from azureml.exceptions import AuthenticationException, ProjectSystemException, AzureMLException, UserErrorException
-from adal.adal_error import AdalError
-from msrest.exceptions import AuthenticationError
 from json import JSONDecodeError
-from utils import AMLConfigurationException, ActionDeploymentError, AMLExperimentConfigurationException, required_parameters_provided, mask_parameter, convert_to_markdown, load_pipeline_yaml, load_runconfig_yaml, load_runconfig_python, get_template_parameters
+from utils import AMLConfigurationException, ActionDeploymentError, ResourceManagementError, required_parameters_provided, mask_parameter, get_template_parameters
 from azure.common.credentials import ServicePrincipalCredentials
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
