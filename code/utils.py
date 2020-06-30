@@ -16,6 +16,9 @@ class ResourceManagementError(Exception):
 class CredentialsVerificationError(Exception):
     pass
 
+class TemplateParameterException(Exception):
+    pass
+
 
 def get_template_parameters(template_params_file_path,subscriptionId,self_repoName,repo_PatToken):
     parameters=None
