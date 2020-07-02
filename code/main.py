@@ -14,7 +14,7 @@ def main():
     template_params_file = os.environ.get("INPUT_ARMTEMPLATEPARAMS_FILE", default="arm_deploy.params.json")
     azure_credentials = os.environ.get("INPUT_AZURE_CREDENTIALS", default="{}")
     resource_group = os.environ.get("INPUT_RESOURCE_GROUP", default=None)
-    mapped_params = os.environ.get("INPUT_MAPPED_PARAMS", default="")
+    mapped_params = os.environ.get("INPUT_MAPPED_PARAMS", default="{}")
 
     try:
         azure_credentials = json.loads(azure_credentials)
