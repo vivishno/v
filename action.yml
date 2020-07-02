@@ -18,7 +18,7 @@ inputs:
     required: true
     default: "newresource_grp"
   mapped_params:
-    description: "pat-token of repository to register for event dispatch"
+    description: "mapped parameters to be added during runtime"
     required: false
     default: "{}"
 outputs:
