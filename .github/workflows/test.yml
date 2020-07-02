@@ -20,4 +20,4 @@ jobs:
           armtemplate_file: "deploy.json"
           armtemplateparams_file: "deploy.params.json"
           resource_group: "ashkuma_functionAppRsGroup"
-          mapped_params: '{"patToken":"${{secrets.PAT_TOKEN}}", "repoName": "newRepoName" }'
+          mapped_params: '{"patToken":"${{secrets.PAT_TOKEN}}"}'

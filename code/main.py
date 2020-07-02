@@ -76,28 +76,28 @@ def main():
         template = json.load(template_file_fd)
 
     print(parameters)        
-    # deployment_properties = {
-    #     'properties':{
-    #         'mode': DeploymentMode.incremental,
-    #         'template': template,
-    #         'parameters': parameters
-    #     }
-    #  }
-    # try:
-    #     validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
-    #     validate.wait()
-    # except Exception as ex:
-    #     raise ActionDeploymentError(ex)    
-    # try:
-    #     deployment_async_operation = client.deployments.create_or_update(
-    #             resource_group,
-    #             'azure-sample',
-    #             deployment_properties
-    #         )
-    #     deployment_async_operation.wait()
-    # except Exception as ex:
-    #     raise ActionDeploymentError(ex)
-    # print("Deployment done")
+    deployment_properties = {
+        'properties':{
+            'mode': DeploymentMode.incremental,
+            'template': template,
+            'parameters': parameters
+        }
+     }
+    try:
+        validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
+        validate.wait()
+    except Exception as ex:
+        raise ActionDeploymentError(ex)    
+    try:
+        deployment_async_operation = client.deployments.create_or_update(
+                resource_group,
+                'azure-sample',
+                deployment_properties
+            )
+        deployment_async_operation.wait()
+    except Exception as ex:
+        raise ActionDeploymentError(ex)
+    print("Deployment done")
 
 if __name__ == "__main__":
     main()
