@@ -14,7 +14,6 @@ def main():
     template_params_file = os.environ.get("INPUT_ARMTEMPLATEPARAMS_FILE", default="deploy.params.json")
     azure_credentials = os.environ.get("INPUT_AZURE_CREDENTIALS", default="{}")
     resource_group = os.environ.get("INPUT_RESOURCE_GROUP", default="newresource_group")
-    repo_PatToken = os.environ.get("INPUT_PATTOKEN", default="")
     mapped_params = os.environ.get("INPUT_MAPPED_PARAMS", default="")
 
     try:
@@ -25,10 +24,9 @@ def main():
 
     try:
         mapped_params = json.loads(mapped_params)
-        print(mapped_params)
     except JSONDecodeError:
-        print("::error::Please paste output of `az ad sp create-for-rbac --name <your-sp-name> --role contributor --scopes /subscriptions/<your-subscriptionId>/resourceGroups/<your-rg> --sdk-auth` as value of secret variable: AZURE_CREDENTIALS")
-        raise AMLConfigurationException(f"Incorrect or poorly formed output from azure credentials saved in AZURE_CREDENTIALS secret. See setup in https://github.com/Azure/aml-workspace/blob/master/README.md")
+        print("::error::Incorrect mapped parameters Format , please put mapped parameters strings like this {\"patToken\":\"${{secrets.PAT_TOKEN}}\", .... }")
+        raise AMLConfigurationException(f"Incorrect or poorly formed mapped params. See setup in https://github.com/Azure/aml_configure/blob/master/README.md")
 
     # Checking provided parameters
     print("::debug::Checking provided parameters")
@@ -56,26 +54,26 @@ def main():
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
     
-    parameters=get_template_parameters(template_params_file_path,repo_PatToken)
-    # credentials=None
-    # try:
-    #     credentials = ServicePrincipalCredentials(
-    #          client_id=service_principal_id,
-    #          secret=service_principal_password,
-    #          tenant=tenant_id
-    #       )
-    # except Exception as ex:
-    #    raise CredentialsVerificationError(ex)
+    parameters=get_template_parameters(template_params_file_path,mapped_params)
+    credentials=None
+    try:
+        credentials = ServicePrincipalCredentials(
+             client_id=service_principal_id,
+             secret=service_principal_password,
+             tenant=tenant_id
+          )
+    except Exception as ex:
+       raise CredentialsVerificationError(ex)
     
-    # client=None
-    # try:    
-    #     client = ResourceManagementClient(credentials, subscriptionId)
-    # except Exception as ex:
-    #     raise ResourceManagementError(ex)  
+    client=None
+    try:    
+        client = ResourceManagementClient(credentials, subscriptionId)
+    except Exception as ex:
+        raise ResourceManagementError(ex)  
         
-    # template=None
-    # with open(template_file_file_path, 'r') as template_file_fd:
-    #      template = json.load(template_file_fd)
+    template=None
+    with open(template_file_file_path, 'r') as template_file_fd:
+        template = json.load(template_file_fd)
 
     print(parameters)        
     # deployment_properties = {

@@ -20,14 +20,16 @@ class TemplateParameterException(Exception):
     pass
 
 
-def get_template_parameters(template_params_file_path,repo_PatToken):
+def get_template_parameters(template_params_file_path,mapped_params):
     parameters=None
     try:
         with open(template_params_file_path,"r") as f:
             jsonobject = json.load(f);
         parameters=jsonobject["parameters"]
-        parameters["patToken"]["value"] = repo_PatToken
-        
+        for k in mapped_params:
+            parameters[k]={}
+            parameters[k]["value"] = mapped_params[k]
+   
     except JSONDecodeError:
         print("::error::Please check the parameter file for errors")
         raise TemplateParameterException(f"Incorrect or poorly formed template parameters")

@@ -17,10 +17,6 @@ inputs:
     description: "resource group which is to be used"
     required: true
     default: "newresource_grp"
-  pattoken:
-    description: "pat-token of repository to register for event dispatch"
-    required: true
-    default: "asdasd"
   mapped_params:
     description: "pat-token of repository to register for event dispatch"
     required: true
