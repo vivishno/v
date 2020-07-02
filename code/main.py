@@ -15,7 +15,8 @@ def main():
     azure_credentials = os.environ.get("INPUT_AZURE_CREDENTIALS", default="{}")
     resource_group = os.environ.get("INPUT_RESOURCE_GROUP", default="newresource_group")
     repo_PatToken = os.environ.get("INPUT_PATTOKEN", default="")
-    self_repoName = os.environ.get("GITHUB_REPOSITORY")
+    mapped_params = os.environ.get("INPUT_MAPPED_PARAMS", default="")
+
     try:
         azure_credentials = json.loads(azure_credentials)
     except JSONDecodeError:
@@ -48,49 +49,50 @@ def main():
     service_principal_password=azure_credentials.get("clientSecret", "")
     subscriptionId=azure_credentials.get("subscriptionId", "")
     
-    parameters=get_template_parameters(template_params_file_path,repo_PatToken)    
-    credentials=None
-    try:
-        credentials = ServicePrincipalCredentials(
-             client_id=service_principal_id,
-             secret=service_principal_password,
-             tenant=tenant_id
-          )
-    except Exception as ex:
-       raise CredentialsVerificationError(ex)
+    parameters=get_template_parameters(template_params_file_path,repo_PatToken)
+    # credentials=None
+    # try:
+    #     credentials = ServicePrincipalCredentials(
+    #          client_id=service_principal_id,
+    #          secret=service_principal_password,
+    #          tenant=tenant_id
+    #       )
+    # except Exception as ex:
+    #    raise CredentialsVerificationError(ex)
     
-    client=None
-    try:    
-        client = ResourceManagementClient(credentials, subscriptionId)
-    except Exception as ex:
-        raise ResourceManagementError(ex)  
+    # client=None
+    # try:    
+    #     client = ResourceManagementClient(credentials, subscriptionId)
+    # except Exception as ex:
+    #     raise ResourceManagementError(ex)  
         
-    template=None
-    with open(template_file_file_path, 'r') as template_file_fd:
-         template = json.load(template_file_fd)
-            
-    deployment_properties = {
-        'properties':{
-            'mode': DeploymentMode.incremental,
-            'template': template,
-            'parameters': parameters
-        }
-     }
-    try:
-        validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
-        validate.wait()
-    except Exception as ex:
-        raise ActionDeploymentError(ex)    
-    try:
-        deployment_async_operation = client.deployments.create_or_update(
-                resource_group,
-                'azure-sample',
-                deployment_properties
-            )
-        deployment_async_operation.wait()
-    except Exception as ex:
-        raise ActionDeploymentError(ex)
-    print("Deployment done")
+    # template=None
+    # with open(template_file_file_path, 'r') as template_file_fd:
+    #      template = json.load(template_file_fd)
+
+    print(parameters)        
+    # deployment_properties = {
+    #     'properties':{
+    #         'mode': DeploymentMode.incremental,
+    #         'template': template,
+    #         'parameters': parameters
+    #     }
+    #  }
+    # try:
+    #     validate=client.deployments.validate(resource_group,"azure-sample",deployment_properties)
+    #     validate.wait()
+    # except Exception as ex:
+    #     raise ActionDeploymentError(ex)    
+    # try:
+    #     deployment_async_operation = client.deployments.create_or_update(
+    #             resource_group,
+    #             'azure-sample',
+    #             deployment_properties
+    #         )
+    #     deployment_async_operation.wait()
+    # except Exception as ex:
+    #     raise ActionDeploymentError(ex)
+    # print("Deployment done")
 
 if __name__ == "__main__":
     main()

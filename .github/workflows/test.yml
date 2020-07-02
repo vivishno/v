@@ -1,11 +1,7 @@
 # Test Actions train a model on Azure Machine Learning
 name: aml-train-deploy-workflow 
-on:
-  push:
-    branches:
-      - master
-    # paths:
-    #   - 'code/*'
+on: [push]
+
 jobs:
   train:
     runs-on: ubuntu-latest
@@ -25,3 +21,4 @@ jobs:
           armtemplateparams_file: "deploy.params.json"
           resource_group: "ashkuma_functionAppRsGroup"
           pattoken: ${{secrets.PAT_TOKEN}}
+          mapped_params: "key:${{secrets.PAT_TOKEN}}"
