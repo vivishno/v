@@ -10,10 +10,10 @@ from azure.mgmt.resource.resources.models import DeploymentMode
 def main():
     # # Loading input values
     # print("::debug::Loading input values")
-    template_file = os.environ.get("INPUT_ARMTEMPLATE_FILE", default="deploy.json")
-    template_params_file = os.environ.get("INPUT_ARMTEMPLATEPARAMS_FILE", default="deploy.params.json")
+    template_file = os.environ.get("INPUT_ARMTEMPLATE_FILE", default="arm_deploy.json")
+    template_params_file = os.environ.get("INPUT_ARMTEMPLATEPARAMS_FILE", default="arm_deploy.params.json")
     azure_credentials = os.environ.get("INPUT_AZURE_CREDENTIALS", default="{}")
-    resource_group = os.environ.get("INPUT_RESOURCE_GROUP", default="newresource_group")
+    resource_group = os.environ.get("INPUT_RESOURCE_GROUP", default=None)
     mapped_params = os.environ.get("INPUT_MAPPED_PARAMS", default="")
 
     try:
@@ -28,6 +28,8 @@ def main():
         print("::error::Incorrect mapped parameters Format , please put mapped parameters strings like this {\"patToken\":\"${{secrets.PAT_TOKEN}}\", .... }")
         raise AMLConfigurationException(f"Incorrect or poorly formed mapped params. See setup in https://github.com/Azure/aml_configure/blob/master/README.md")
 
+    if not resource_group:
+        raise AMLConfigurationException(f"A resource group must be provided")
     # Checking provided parameters
     print("::debug::Checking provided parameters")
     required_parameters_provided(
@@ -74,8 +76,7 @@ def main():
     template=None
     with open(template_file_file_path, 'r') as template_file_fd:
         template = json.load(template_file_fd)
-
-    print(parameters)        
+        
     deployment_properties = {
         'properties':{
             'mode': DeploymentMode.incremental,

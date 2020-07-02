@@ -1,5 +1,5 @@
-# Test Actions train a model on Azure Machine Learning
-name: aml-train-deploy-workflow 
+# Tests Actions to deploy ARM template to Azure
+name: arm-template-deploy
 on: [push]
 
 jobs:
