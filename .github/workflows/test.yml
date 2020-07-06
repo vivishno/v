@@ -19,5 +19,5 @@ jobs:
           azure_credentials: ${{ secrets.AZURE_CREDENTIALS }}
           armtemplate_file: "deploy.json"
           armtemplateparams_file: "deploy.params.json"
-          resource_group: "ashkuma_functionAppRsGroup"
+          resource_group: "checkin2"
           mapped_params: '{"patToken":"${{secrets.PAT_TOKEN}}"}'
